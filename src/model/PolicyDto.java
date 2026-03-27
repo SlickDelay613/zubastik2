@@ -9,12 +9,14 @@ public class PolicyDto {
     double coverageAmount;
     double premium;
     boolean active;
+    String policyType;
 
-    public PolicyDto(String policyNumber, CustomerDto customer, double coverageAmount, double premium) {
+    public PolicyDto(String policyNumber, CustomerDto customer, double coverageAmount, double premium, String policyType) {
         this.policyNumber = policyNumber;
         this.customer = customer;
         this.coverageAmount = coverageAmount;
         this.premium = premium;
         this.active = true;
+        this.policyType = policyType;
     }
 }

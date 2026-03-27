@@ -23,24 +23,16 @@ public class ClaimServiceImpl implements ClaimService {
         if (payoutAmount <= 0) {
             throw new ValidationException("Сумма выплаты должна быть положительной!");
         }
-        if (payoutAmount > claim.getPolicy().getCoverageAmount() + claim.getPolicy().getPremium()) {
-            throw new ClaimProcessingException("Сумма выплаты не может превышать страховую сумму по полису!");
-        }
-        claim.setPayoutAmount(payoutAmount);
-        claim.setStatus(ClaimStatus.APPROVED);
+        claim.getState().approve(claim, payoutAmount);
     }
 
     @Override
     public void reject(ClaimDto claim) {
-        claim.setPayoutAmount(0);
-        claim.setStatus(ClaimStatus.REJECTED);
+        claim.getState().reject(claim);
     }
 
     @Override
     public void markAsPaid(ClaimDto claim) {
-        if (claim.getStatus() != ClaimStatus.APPROVED) {
-            throw new ClaimProcessingException("Оплатить можно только одобренный страховой случай!");
-        }
-        claim.setStatus(ClaimStatus.PAID);
+        claim.getState().pay(claim);
     }
 }

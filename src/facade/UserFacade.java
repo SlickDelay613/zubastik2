@@ -15,6 +15,8 @@ public class UserFacade {
     public void actionCreatePolicy(Scanner scanner) {
         System.out.println("Введите ФИО клиента");
         String customerName = scanner.nextLine().trim();
+        System.out.println("Введите тип полиса (АВТО, ЗДОР или НЕДВИЖ)");
+        String policyType = scanner.nextLine().trim().toUpperCase();
         System.out.println("Введите страховую сумму");
         double coverage = 0;
         if (scanner.hasNextLine()) {
@@ -29,7 +31,7 @@ public class UserFacade {
             throw new ValidationException("Сумма покрытия не может быть пустой!");
         System.out.println("Введите тариф страхования в процентах");
         double baseRatePercent = Double.parseDouble(scanner.nextLine().trim());
-        PolicyDto policy = clientInstance.createPolicy(customerName, coverage, baseRatePercent);
+        PolicyDto policy = clientInstance.createPolicy(customerName, coverage, baseRatePercent, policyType);
         System.out.println("Зарегистрирован новый страховой полис! Его номер - " + policy.getPolicyNumber());
     }
 
