@@ -31,9 +31,11 @@ public final class Numerator {
     }
 
     private static boolean newType(Class<?> someClass) {
-        boolean res = true;
+        boolean res = true, a;
         for (NumeratorEntry numeratorEntry : inUse) {
-            res = numeratorEntry.getClass() == someClass;
+            a = numeratorEntry.getEntryClass() != someClass;
+            if (!a)
+                res = false;
         }
         return res;
     }
