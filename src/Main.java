@@ -10,6 +10,7 @@ public class Main {
         UserFacade facade = new UserFacade(userAppInstance);
         Scanner scanner = new Scanner(System.in);
         boolean running = true;
+        int a = 15125;
         while (running) {
             facade.actionPrintUserHelp();
             String choice = scanner.nextLine().trim();
