@@ -18,7 +18,7 @@ public class UserFacade {
         System.out.println("Введите тип полиса (АВТО, ЗДОР или НЕДВИЖ)");
         String policyType = scanner.nextLine().trim().toUpperCase();
         System.out.println("Введите страховую сумму");
-        double coverage = 0;
+        double coverage;
         if (scanner.hasNextLine()) {
             try {
                 coverage = Double.parseDouble(scanner.nextLine().trim());
@@ -30,7 +30,7 @@ public class UserFacade {
         else
             throw new ValidationException("Сумма покрытия не может быть пустой!");
         System.out.println("Введите процент страховой премии от суммы");
-        double baseRatePercent = 0;
+        double baseRatePercent;
         if (scanner.hasNextLine()) {
             try {
                 baseRatePercent = Double.parseDouble(scanner.nextLine().trim());
@@ -65,7 +65,7 @@ public class UserFacade {
         System.out.println("Введите номер страхового полиса");
         String policyNumber = scanner.nextLine().trim();
         System.out.println("Введите сумму ущерба");
-        double damageAmount = 0;
+        double damageAmount;
         if (scanner.hasNextLine()) {
             try {
                 damageAmount = Double.parseDouble(scanner.nextLine().trim());

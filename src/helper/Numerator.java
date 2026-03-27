@@ -6,7 +6,7 @@ public final class Numerator {
     static ArrayList<NumeratorEntry> inUse = new ArrayList<>();
 
     public static int makeNewNumberForType(Class<?> someClass){
-        int res = 0;
+        int res;
         if (newType(someClass)) {
             inUse.add(new NumeratorEntry(someClass));
             res = 1;
