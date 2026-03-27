@@ -7,4 +7,8 @@ public class HealthPayoutStrategy implements PayoutCalculationStrategy {
     public double calculatePayout(ClaimDto claim) {
         return Math.min(claim.getDamageAmount(), claim.getPolicy().getCoverageAmount());
     }
+    @Override
+    public String getSupportedType() {
+        return "ЗДОР";
+    }
 }

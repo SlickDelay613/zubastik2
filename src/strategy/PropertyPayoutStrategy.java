@@ -7,4 +7,9 @@ public class PropertyPayoutStrategy implements PayoutCalculationStrategy {
     public double calculatePayout(ClaimDto claim) {
         return Math.min(claim.getDamageAmount() * 0.8, claim.getPolicy().getCoverageAmount());
     }
+
+    @Override
+    public String getSupportedType() {
+        return "НЕДВИЖ";
+    }
 }
