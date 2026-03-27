@@ -53,7 +53,17 @@ public class UserFacade {
         System.out.println("Введите номер страхового полиса");
         String policyNumber = scanner.nextLine().trim();
         System.out.println("Введите сумму ущерба");
-        double damageAmount = Double.parseDouble(scanner.nextLine().trim());
+        double damageAmount = 0;
+        if (scanner.hasNextLine()) {
+            try {
+                damageAmount = Double.parseDouble(scanner.nextLine().trim());
+            }
+            catch (NumberFormatException e){
+                throw new ValidationException("Не удалось найти сумму ущерба в строке!");
+            }
+        }
+        else
+            throw new ValidationException("Сумма ущерба не может быть пустой!");
         ClaimDto claim = clientInstance.registerClaim(policyNumber, damageAmount);
         System.out.println("Зарегистрирован новый страховой случай! Его номер - " + claim.getClaimNumber());
     }
