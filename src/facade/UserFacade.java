@@ -27,8 +27,18 @@ public class UserFacade {
         }
         else
             throw new ValidationException("Сумма покрытия не может быть пустой!");
-        System.out.println("Введите тариф страхования в процентах");
-        double baseRatePercent = Double.parseDouble(scanner.nextLine().trim());
+        System.out.println("Введите процент страховой премии от суммы");
+        double baseRatePercent = 0;
+        if (scanner.hasNextLine()) {
+            try {
+                baseRatePercent = Double.parseDouble(scanner.nextLine().trim());
+            }
+            catch (NumberFormatException e){
+                throw new ValidationException("Не удалось найти процент премии в строке!");
+            }
+        }
+        else
+            throw new ValidationException("Процент премии не может быть пустым!");
         PolicyDto policy = clientInstance.createPolicy(customerName, coverage, baseRatePercent);
         System.out.println("Зарегистрирован новый страховой полис! Его номер - " + policy.getPolicyNumber());
     }
