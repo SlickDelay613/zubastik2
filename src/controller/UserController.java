@@ -108,7 +108,7 @@ public class UserController {
         if (approve) {
             String policyType = claim.getPolicy().getPolicyType();
             PayoutCalculationStrategy strategy = payoutStrategies.getOrDefault(policyType, new CarPayoutStrategy());
-            double payoutAmount = Math.min(claim.getDamageAmount(), claim.getPolicy().getCoverageAmount()) + claim.getPolicy().getPremium();
+            double payoutAmount = strategy.calculatePayout(claim);
             claimService.approve(claim, payoutAmount);
             claimService.markAsPaid(claim);
         } else {
