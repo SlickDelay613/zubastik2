@@ -9,6 +9,8 @@ public class CustomerDto {
     String id;
     String name;
 
-    public CustomerDto(String customerId, String name) {
+    public CustomerDto(String id, String name) {
+        this.id = id;
+        this.name = name;
     }
 }

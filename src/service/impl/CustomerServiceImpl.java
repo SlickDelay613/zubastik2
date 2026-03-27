@@ -1,5 +1,6 @@
 package service.impl;
 
+import helper.Numerator;
 import model.CustomerDto;
 import exception.ValidationException;
 import service.CustomerService;
@@ -12,7 +13,7 @@ public class CustomerServiceImpl implements CustomerService {
         if (name == null || name.isEmpty()) {
             throw new ValidationException("Имя клиента не может быть пустым!");
         }
-        String customerId = UUID.randomUUID().toString();
+        String customerId = String.valueOf(Numerator.makeNewNumberForType(CustomerDto.class));
         return new CustomerDto(customerId, name);
     }
 }
