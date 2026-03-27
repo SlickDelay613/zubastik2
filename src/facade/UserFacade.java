@@ -57,7 +57,7 @@ public class UserFacade {
         System.out.println("========================СТРАХОВЫЕ СЛУЧАИ==========================");
         System.out.println("|-Номер-|------------ФИО---------------|---Ущерб---|---Выплата---|");
         for (ClaimDto claim : clientInstance.getAllClaims()) {
-            System.out.printf("|%-7s|%-30s|%-11s|%-14s|%n", claim.getClaimNumber(), claim.getPolicy().getCustomer().getName(), claim.getDamageAmount(), claim.getPayoutAmount());
+            System.out.printf("|%-7s|%-30s|%-11s|%-13s|%n", claim.getClaimNumber(), claim.getPolicy().getCustomer().getName(), claim.getDamageAmount(), claim.getPayoutAmount());
         }
     }
 
