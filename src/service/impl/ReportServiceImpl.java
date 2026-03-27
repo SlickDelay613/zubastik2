@@ -21,7 +21,7 @@ public class ReportServiceImpl implements ReportService {
         for (ClaimDto claim : claims) {
             if (claim.getStatus() == ClaimStatus.PAID) {
                 lines.add("Случай " + claim.getClaimNumber() + ", полис " + claim.getPolicy().getPolicyNumber()
-                        + ", выплата: " + claim.getPayoutAmount());
+                        + ", выплата: " + claim.getPayoutAmount() + ", тип полиса: " + claim.getPolicy().getPolicyType());
                 totalPaid += claim.getPayoutAmount();
             }
         }

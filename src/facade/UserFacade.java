@@ -29,22 +29,32 @@ public class UserFacade {
         }
         else
             throw new ValidationException("Сумма покрытия не может быть пустой!");
-        System.out.println("Введите тариф страхования в процентах");
-        double baseRatePercent = Double.parseDouble(scanner.nextLine().trim());
+        System.out.println("Введите процент страховой премии от суммы");
+        double baseRatePercent = 0;
+        if (scanner.hasNextLine()) {
+            try {
+                baseRatePercent = Double.parseDouble(scanner.nextLine().trim());
+            }
+            catch (NumberFormatException e){
+                throw new ValidationException("Не удалось найти процент премии в строке!");
+            }
+        }
+        else
+            throw new ValidationException("Процент премии не может быть пустым!");
         PolicyDto policy = clientInstance.createPolicy(customerName, coverage, baseRatePercent, policyType);
         System.out.println("Зарегистрирован новый страховой полис! Его номер - " + policy.getPolicyNumber());
     }
 
     public void actionListPolicies() {
-        System.out.println("==========СТРАХОВЫЕ ПОЛИСЫ==========");
-        System.out.println("|-Номер-|------------ФИО---------------|---Премия---|---Покрытие---|");
+        System.out.println("==========================СТРАХОВЫЕ ПОЛИСЫ==================================");
+        System.out.println("|-Номер-|------------ФИО---------------|---Премия---|---Покрытие---|--Тип--|");
         for (PolicyDto policy : clientInstance.getAllPolicies()) {
-            System.out.printf("|%-7s|%-30s|%-12s|%-14s|%n",policy.getPolicyNumber(), policy.getCustomer().getName(), policy.getPremium(), policy.getCoverageAmount());
+            System.out.printf("|%-7s|%-30s|%-12s|%-14s|%-7s|%n",policy.getPolicyNumber(), policy.getCustomer().getName(), policy.getPremium(), policy.getCoverageAmount(), policy.getPolicyType());
         }
     }
 
     public void actionListClaims() {
-        System.out.println("==========СТРАХОВЫЕ СЛУЧАИ==========");
+        System.out.println("========================СТРАХОВЫЕ СЛУЧАИ==========================");
         System.out.println("|-Номер-|------------ФИО---------------|---Ущерб---|---Выплата---|");
         for (ClaimDto claim : clientInstance.getAllClaims()) {
             System.out.printf("|%-7s|%-30s|%-12s|%-15s|%n", claim.getClaimNumber(), claim.getPolicy().getCustomer().getName(), claim.getDamageAmount(), claim.getPayoutAmount());
@@ -55,7 +65,17 @@ public class UserFacade {
         System.out.println("Введите номер страхового полиса");
         String policyNumber = scanner.nextLine().trim();
         System.out.println("Введите сумму ущерба");
-        double damageAmount = Double.parseDouble(scanner.nextLine().trim());
+        double damageAmount = 0;
+        if (scanner.hasNextLine()) {
+            try {
+                damageAmount = Double.parseDouble(scanner.nextLine().trim());
+            }
+            catch (NumberFormatException e){
+                throw new ValidationException("Не удалось найти сумму ущерба в строке!");
+            }
+        }
+        else
+            throw new ValidationException("Сумма ущерба не может быть пустой!");
         ClaimDto claim = clientInstance.registerClaim(policyNumber, damageAmount);
         System.out.println("Зарегистрирован новый страховой случай! Его номер - " + claim.getClaimNumber());
     }
