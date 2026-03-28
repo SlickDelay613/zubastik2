@@ -3,7 +3,7 @@ package model;
 import helper.ClaimStatus;
 import lombok.Data;
 import state.ClaimState;
-import state.RegisteredState;
+import state.impl.RegisteredState;
 
 @Data
 public class ClaimDto {

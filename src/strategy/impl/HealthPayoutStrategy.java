@@ -1,6 +1,7 @@
-package strategy;
+package strategy.impl;
 
 import model.ClaimDto;
+import strategy.PayoutCalculationStrategy;
 
 public class HealthPayoutStrategy implements PayoutCalculationStrategy {
     @Override

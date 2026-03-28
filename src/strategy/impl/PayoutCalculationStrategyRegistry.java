@@ -1,4 +1,6 @@
-package strategy;
+package strategy.impl;
+
+import strategy.PayoutCalculationStrategy;
 
 import java.util.HashMap;
 import java.util.Map;

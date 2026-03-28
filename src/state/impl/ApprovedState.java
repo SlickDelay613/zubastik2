@@ -1,7 +1,8 @@
-package state;
+package state.impl;
 
 import helper.ClaimStatus;
 import model.ClaimDto;
+import state.ClaimState;
 
 public class ApprovedState implements ClaimState {
     @Override

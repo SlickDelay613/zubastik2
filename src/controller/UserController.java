@@ -5,6 +5,10 @@ import dao.PolicyDao;
 import dao.impl.ClaimDaoImpl;
 import dao.impl.PolicyDaoImpl;
 import factory.*;
+import factory.impl.CarPolicyFactory;
+import factory.impl.HealthPolicyFactory;
+import factory.impl.PolicyFactoryRegistry;
+import factory.impl.PropertyPolicyFactory;
 import model.ClaimDto;
 import model.CustomerDto;
 import model.PolicyDto;
@@ -19,6 +23,10 @@ import service.impl.CustomerServiceImpl;
 import service.impl.PremiumCalculationServiceImpl;
 import service.impl.ReportServiceImpl;
 import strategy.*;
+import strategy.impl.CarPayoutStrategy;
+import strategy.impl.HealthPayoutStrategy;
+import strategy.impl.PayoutCalculationStrategyRegistry;
+import strategy.impl.PropertyPayoutStrategy;
 
 import java.util.Collection;
 

@@ -1,4 +1,6 @@
-package factory;
+package factory.impl;
+
+import factory.PolicyFactory;
 
 import java.util.HashMap;
 import java.util.Map;
