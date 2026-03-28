@@ -1,5 +1,6 @@
 package model;
 
+import helper.PolicyType;
 import lombok.Data;
 
 @Data
@@ -9,9 +10,9 @@ public class PolicyDto {
     double coverageAmount;
     double premium;
     boolean active;
-    String policyType;
+    PolicyType policyType;
 
-    public PolicyDto(String policyNumber, CustomerDto customer, double coverageAmount, double premium, String policyType) {
+    public PolicyDto(String policyNumber, CustomerDto customer, double coverageAmount, double premium, PolicyType policyType) {
         this.policyNumber = policyNumber;
         this.customer = customer;
         this.coverageAmount = coverageAmount;

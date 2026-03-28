@@ -2,6 +2,7 @@ package controller;
 
 import dao.ClaimDao;
 import dao.PolicyDao;
+import helper.PolicyDecipher;
 import dao.impl.ClaimDaoImpl;
 import dao.impl.PolicyDaoImpl;
 import factory.*;
@@ -9,6 +10,7 @@ import factory.impl.CarPolicyFactory;
 import factory.impl.HealthPolicyFactory;
 import factory.impl.PolicyFactoryRegistry;
 import factory.impl.PropertyPolicyFactory;
+import helper.PolicyType;
 import model.ClaimDto;
 import model.CustomerDto;
 import model.PolicyDto;
@@ -83,9 +85,11 @@ public class UserController {
     public PolicyDto createPolicy(String customerName, double coverageAmount, double baseRatePercent, String policyType) {
         CustomerDto customer = customerService.createCustomer(customerName);
         double premium = premiumCalculator.calculatePremium(coverageAmount, baseRatePercent);
-        PolicyFactory factory = factoryRegistry.getFactory(policyType);
+        PolicyType ptype = PolicyDecipher.decipher(policyType);
+        PolicyFactory factory = factoryRegistry.getFactory(ptype);
         PolicyDto policy = factory.createPolicy(customer, coverageAmount, premium);
         policyDao.save(policy);
+        //создать сервис с сохранением и созданием
         return policy;
     }
 
