@@ -1,12 +1,29 @@
 package service.impl;
 
+import dao.ClaimDao;
 import helper.Numerator;
+import helper.PolicyType;
 import model.ClaimDto;
 import model.PolicyDto;
 import exception.ValidationException;
 import service.ClaimService;
+import strategy.PayoutCalculationStrategy;
+import strategy.impl.CarPayoutStrategy;
+import strategy.impl.PayoutCalculationStrategyRegistry;
+import strategy.impl.HealthPayoutStrategy;
+import strategy.impl.PropertyPayoutStrategy;
 
 public class ClaimServiceImpl implements ClaimService {
+    private final ClaimDao claimDao;
+    private final PayoutCalculationStrategyRegistry payoutCalculationStrategyRegistry = new PayoutCalculationStrategyRegistry();
+
+    public ClaimServiceImpl(ClaimDao claimDao){
+        this.claimDao = claimDao;
+        payoutCalculationStrategyRegistry.register(new CarPayoutStrategy());
+        payoutCalculationStrategyRegistry.register(new PropertyPayoutStrategy());
+        payoutCalculationStrategyRegistry.register(new HealthPayoutStrategy());
+    }
+
     @Override
     public ClaimDto createClaim(PolicyDto policy, double damageAmount) {
         if (damageAmount <= 0) {
@@ -32,5 +49,20 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     public void markAsPaid(ClaimDto claim) {
         claim.getState().pay(claim);
+    }
+
+    @Override
+    public void processClaim(String claimId, boolean approve) {
+        ClaimDto claim = claimDao.findById(claimId);
+        if (approve) {
+            PolicyType policyType = claim.getPolicy().getPolicyType();
+            PayoutCalculationStrategy strategy = payoutCalculationStrategyRegistry.getStrategy(policyType);
+            double payoutAmount = strategy.calculatePayout(claim);
+            approve(claim, payoutAmount);
+            markAsPaid(claim);
+        } else {
+            reject(claim);
+        }
+        claimDao.save(claim);
     }
 }

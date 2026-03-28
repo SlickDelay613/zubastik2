@@ -62,7 +62,7 @@ public class UserController {
         return new UserController(
                 policyDao,
                 claimDao,
-                new ClaimServiceImpl(),
+                new ClaimServiceImpl(claimDao),
                 new CustomerServiceImpl(),
                 new PremiumCalculationServiceImpl(),
                 new ReportServiceImpl(),
@@ -94,17 +94,7 @@ public class UserController {
     }
 
     public void processClaim(String claimId, boolean approve) {
-        ClaimDto claim = claimDao.findById(claimId);
-        if (approve) {
-            PolicyType policyType = claim.getPolicy().getPolicyType();
-            PayoutCalculationStrategy strategy = payoutCalculationStrategyRegistry.getStrategy(policyType);
-            double payoutAmount = strategy.calculatePayout(claim);
-            claimService.approve(claim, payoutAmount);
-            claimService.markAsPaid(claim);
-        } else {
-            claimService.reject(claim);
-        }
-        claimDao.save(claim);
+        claimService.processClaim(claimId, approve);
     }
 
     public String generatePayoutReport() {

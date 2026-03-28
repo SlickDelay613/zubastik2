@@ -8,4 +8,5 @@ public interface ClaimService {
     void approve(ClaimDto claim, double payoutAmount);
     void reject(ClaimDto claim);
     void markAsPaid(ClaimDto claim);
+    void processClaim(String claimId, boolean approve);
 }
