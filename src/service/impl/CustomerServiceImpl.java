@@ -5,8 +5,6 @@ import model.CustomerDto;
 import exception.ValidationException;
 import service.CustomerService;
 
-import java.util.UUID;
-
 public class CustomerServiceImpl implements CustomerService {
     @Override
     public CustomerDto createCustomer(String name) {

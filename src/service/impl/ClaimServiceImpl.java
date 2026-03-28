@@ -3,9 +3,7 @@ package service.impl;
 import helper.Numerator;
 import model.ClaimDto;
 import model.PolicyDto;
-import exception.ClaimProcessingException;
 import exception.ValidationException;
-import helper.ClaimStatus;
 import service.ClaimService;
 
 public class ClaimServiceImpl implements ClaimService {
