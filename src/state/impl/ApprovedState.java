@@ -1,5 +1,6 @@
 package state.impl;
 
+import exception.ClaimProcessingException;
 import helper.ClaimStatus;
 import model.ClaimDto;
 import state.ClaimState;
@@ -7,12 +8,12 @@ import state.ClaimState;
 public class ApprovedState implements ClaimState {
     @Override
     public void approve(ClaimDto claim, double payoutAmount) {
-        throw new IllegalStateException("Случай уже одобрен!");
+        throw new ClaimProcessingException("Случай уже одобрен!");
     }
 
     @Override
     public void reject(ClaimDto claim) {
-        throw new IllegalStateException("Нельзя отклонить одобренный случай!");
+        throw new ClaimProcessingException("Нельзя отклонить одобренный случай!");
     }
 
     @Override

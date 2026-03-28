@@ -1,5 +1,6 @@
 package state.impl;
 
+import exception.ClaimProcessingException;
 import helper.ClaimStatus;
 import model.ClaimDto;
 import state.ClaimState;
@@ -12,12 +13,12 @@ public class PaidState implements ClaimState {
 
     @Override
     public void reject(ClaimDto claim) {
-        throw new IllegalStateException("Нельзя изменить оплаченный случай!");
+        throw new ClaimProcessingException("Нельзя изменить оплаченный случай!");
     }
 
     @Override
     public void pay(ClaimDto claim) {
-        throw new IllegalStateException("Случай уже оплачен!");
+        throw new ClaimProcessingException("Случай уже оплачен!");
     }
 
     @Override
