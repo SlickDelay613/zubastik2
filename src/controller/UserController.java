@@ -16,14 +16,8 @@ import model.CustomerDto;
 import model.PolicyDto;
 import repository.impl.ClaimRepositoryImpl;
 import repository.impl.PolicyRepositoryImpl;
-import service.ClaimService;
-import service.CustomerService;
-import service.PremiumCalculationService;
-import service.ReportService;
-import service.impl.ClaimServiceImpl;
-import service.impl.CustomerServiceImpl;
-import service.impl.PremiumCalculationServiceImpl;
-import service.impl.ReportServiceImpl;
+import service.*;
+import service.impl.*;
 import strategy.*;
 import strategy.impl.CarPayoutStrategy;
 import strategy.impl.HealthPayoutStrategy;
@@ -35,25 +29,25 @@ import java.util.Collection;
 public class UserController {
     private final PolicyDao policyDao;
     private final ClaimDao claimDao;
+    private final PolicyService policyService;
     private final ClaimService claimService;
     private final CustomerService customerService;
     private final PremiumCalculationService premiumCalculator;
     private final ReportService reportService;
     private final PayoutCalculationStrategyRegistry payoutCalculationStrategyRegistry;
-    private final PolicyFactoryRegistry factoryRegistry;
 
     public UserController(PolicyDao policyDao, ClaimDao claimDao,
                           ClaimService claimService, CustomerService customerService,
-                          PremiumCalculationService premiumCalculator, ReportService reportService, PolicyFactoryRegistry factoryRegistry,
-                          PayoutCalculationStrategyRegistry payoutCalculationStrategyRegistry) {
+                          PremiumCalculationService premiumCalculator, ReportService reportService,
+                          PayoutCalculationStrategyRegistry payoutCalculationStrategyRegistry, PolicyService policyService) {
         this.policyDao = policyDao;
         this.claimDao = claimDao;
         this.claimService = claimService;
         this.customerService = customerService;
         this.premiumCalculator = premiumCalculator;
         this.reportService = reportService;
-        this.factoryRegistry = factoryRegistry;
         this.payoutCalculationStrategyRegistry = payoutCalculationStrategyRegistry;
+        this.policyService = policyService;
     }
 
     public static UserController create() {
@@ -65,11 +59,6 @@ public class UserController {
         payoutCalculationStrategyRegistry.register(new PropertyPayoutStrategy());
         payoutCalculationStrategyRegistry.register(new HealthPayoutStrategy());
 
-        PolicyFactoryRegistry registry = new PolicyFactoryRegistry();
-        registry.register(new CarPolicyFactory());
-        registry.register(new HealthPolicyFactory());
-        registry.register(new PropertyPolicyFactory());
-
         return new UserController(
                 policyDao,
                 claimDao,
@@ -77,8 +66,8 @@ public class UserController {
                 new CustomerServiceImpl(),
                 new PremiumCalculationServiceImpl(),
                 new ReportServiceImpl(),
-                registry,
-                payoutCalculationStrategyRegistry
+                payoutCalculationStrategyRegistry,
+                new PolicyServiceImpl(policyDao)
         );
     }
 
@@ -86,11 +75,7 @@ public class UserController {
         CustomerDto customer = customerService.createCustomer(customerName);
         double premium = premiumCalculator.calculatePremium(coverageAmount, baseRatePercent);
         PolicyType ptype = PolicyDecipher.decipher(policyType);
-        PolicyFactory factory = factoryRegistry.getFactory(ptype);
-        PolicyDto policy = factory.createPolicy(customer, coverageAmount, premium);
-        policyDao.save(policy);
-        //создать сервис с сохранением и созданием
-        return policy;
+        return policyService.createPolicy(customer, coverageAmount, premium, ptype);
     }
 
     public Collection<PolicyDto> getAllPolicies() {
@@ -111,7 +96,7 @@ public class UserController {
     public void processClaim(String claimId, boolean approve) {
         ClaimDto claim = claimDao.findById(claimId);
         if (approve) {
-            String policyType = claim.getPolicy().getPolicyType();
+            PolicyType policyType = claim.getPolicy().getPolicyType();
             PayoutCalculationStrategy strategy = payoutCalculationStrategyRegistry.getStrategy(policyType);
             double payoutAmount = strategy.calculatePayout(claim);
             claimService.approve(claim, payoutAmount);

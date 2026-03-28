@@ -1,5 +1,6 @@
 package strategy.impl;
 
+import helper.PolicyType;
 import model.ClaimDto;
 import strategy.PayoutCalculationStrategy;
 
@@ -9,7 +10,7 @@ public class HealthPayoutStrategy implements PayoutCalculationStrategy {
         return Math.min(claim.getDamageAmount(), claim.getPolicy().getCoverageAmount());
     }
     @Override
-    public String getSupportedType() {
-        return "ЗДОР";
+    public PolicyType getSupportedType() {
+        return PolicyType.HEALTH;
     }
 }

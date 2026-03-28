@@ -1,5 +1,6 @@
 package strategy.impl;
 
+import helper.PolicyType;
 import model.ClaimDto;
 import strategy.PayoutCalculationStrategy;
 
@@ -10,7 +11,7 @@ public class PropertyPayoutStrategy implements PayoutCalculationStrategy {
     }
 
     @Override
-    public String getSupportedType() {
-        return "НЕДВИЖ";
+    public PolicyType getSupportedType() {
+        return PolicyType.PROPERTY;
     }
 }
