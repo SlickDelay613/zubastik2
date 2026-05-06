@@ -8,7 +8,7 @@ public class ReferenceServiceImpl extends ReferenceServiceGrpc.ReferenceServiceI
     @Override
     public void resolvePolicyType(PolicyTypeRequest request, StreamObserver<PolicyTypeResponse> responseObserver) {
         String traceId = request.getTraceId();
-        System.out.println("[Service B] TraceID: " + traceId + " | Преобразование следующего типа полиса: " + request.getTypeCode());
+        System.out.println("[Сервер обслуживания] ID: " + traceId + " | Преобразование следующего типа полиса: " + request.getTypeCode());
         String type = request.getTypeCode().toUpperCase();
         PolicyTypeResponse.Builder response = PolicyTypeResponse.newBuilder();
 
@@ -25,7 +25,7 @@ public class ReferenceServiceImpl extends ReferenceServiceGrpc.ReferenceServiceI
     @Override
     public void validateCustomer(CustomerValidationRequest request, StreamObserver<ValidationResponse> responseObserver) {
         String traceId = request.getTraceId();
-        System.out.println("[Service B] TraceID: " + traceId + " | Проверка следующего имени клиента: " + request.getName());
+        System.out.println("[Сервер обслуживания] ID: " + traceId + " | Проверка следующего имени клиента: " + request.getName());
 
         boolean isValid = request.getName() != null && !request.getName().trim().isEmpty();
         responseObserver.onNext(ValidationResponse.newBuilder()
@@ -38,7 +38,7 @@ public class ReferenceServiceImpl extends ReferenceServiceGrpc.ReferenceServiceI
     @Override
     public void validateDamage(DamageValidationRequest request, StreamObserver<ValidationResponse> responseObserver) {
         String traceId = request.getTraceId();
-        System.out.println("[Service B] TraceID: " + traceId + " | Проверка следующей суммы ущерба: " + request.getDamageAmount());
+        System.out.println("[Сервер обслуживания] ID: " + traceId + " | Проверка следующей суммы ущерба: " + request.getDamageAmount());
 
         boolean isValid = request.getDamageAmount() > 0;
         responseObserver.onNext(ValidationResponse.newBuilder()
@@ -51,7 +51,7 @@ public class ReferenceServiceImpl extends ReferenceServiceGrpc.ReferenceServiceI
     @Override
     public void calculatePremium(PremiumRequest request, StreamObserver<PremiumResponse> responseObserver) {
         String traceId = request.getTraceId();
-        System.out.println("[Service B] TraceID: " + traceId + " | Расчёт страховой премии...");
+        System.out.println("[Сервер обслуживания] ID: " + traceId + " | Расчёт страховой премии...");
 
         double coverage = request.getCoverageAmount();
         double ratePercent = request.getBaseRatePercent();
@@ -74,7 +74,7 @@ public class ReferenceServiceImpl extends ReferenceServiceGrpc.ReferenceServiceI
     @Override
     public void validatePayout(PayoutValidationRequest request, StreamObserver<ValidationResponse> responseObserver) {
         String traceId = request.getTraceId();
-        System.out.println("[Service B] TraceID: " + traceId + " | Валидация суммы выплаты: " + request.getPayoutAmount());
+        System.out.println("[Сервер обслуживания] ID: " + traceId + " | Валидация суммы выплаты: " + request.getPayoutAmount());
 
         boolean isValid = request.getPayoutAmount() > 0;
         responseObserver.onNext(ValidationResponse.newBuilder()
@@ -87,11 +87,8 @@ public class ReferenceServiceImpl extends ReferenceServiceGrpc.ReferenceServiceI
     @Override
     public void generateNumber(NumberRequest request, StreamObserver<NumberResponse> responseObserver) {
         String className = request.getClassName();
-        // Вызываем твой алгоритм
         int newNumber = ServerNumerator.makeNewNumberForType(className);
-
-        System.out.println("[Service B] Numerator сгенерировал номер: " + newNumber + " для " + className);
-
+        System.out.println("[Сервер обслуживания] Сгенерирован новый номер " + newNumber + " для экземпляра класса " + className);
         responseObserver.onNext(NumberResponse.newBuilder()
                 .setGeneratedNumber(String.valueOf(newNumber))
                 .build());
