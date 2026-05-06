@@ -54,10 +54,10 @@ public class UserFacade {
     }
 
     public void actionListClaims() {
-        System.out.println("========================СТРАХОВЫЕ СЛУЧАИ==========================");
-        System.out.println("|-Номер-|------------ФИО---------------|---Ущерб---|---Выплата---|");
+        System.out.println("=============================СТРАХОВЫЕ СЛУЧАИ================================");
+        System.out.println("|-Номер-|------------ФИО---------------|---Ущерб---|---Выплата---|--Статус--|");
         for (ClaimDto claim : clientInstance.getAllClaims()) {
-            System.out.printf("|%-7s|%-30s|%-11s|%-13s|%n", claim.getClaimNumber(), claim.getPolicy().getCustomer().getName(), claim.getDamageAmount(), claim.getPayoutAmount());
+            System.out.printf("|%-7s|%-30s|%-11s|%-13s|%-10s|%n", claim.getClaimNumber(), claim.getPolicy().getCustomer().getName(), claim.getDamageAmount(), claim.getPayoutAmount(), claim.getStatus());
         }
     }
 
@@ -98,8 +98,21 @@ public class UserFacade {
         System.out.println("4 - Зарегистрировать новый страховой случай");
         System.out.println("5 - Обработать существующий страховой случай");
         System.out.println("6 - Сформировать отчёт по страховым выплатам");
+        System.out.println("7 - Специальная выплата");
+        System.out.println("8 - JSON-отчёт по страховым выплатам");
         System.out.println("0 - Выход");
         System.out.println("Введите номер функции для выполнения (приведены выше)");
+    }
+
+    //bad code part
+    public void actionSpecialPayment(Scanner scanner) {
+        System.out.println("Специальная выплата. Введите номер страхового случая:");
+        String claimId = scanner.nextLine().trim();
+        antipattern.SpecialClaimProcessor.forcePayBypass(clientInstance.getAllClaims(), claimId);
+    }
+    public void actionJson() {
+        System.out.println("Создание JSON-отчёта по страховым выплатам...");
+        antipattern.SpecialClaimProcessor.json(clientInstance.getAllClaims());
     }
 
     public void actionGenerateReport() {

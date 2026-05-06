@@ -1,6 +1,5 @@
 package service.impl;
 
-import dao.ClaimDao;
 import dao.PolicyDao;
 import factory.PolicyFactory;
 import factory.impl.CarPolicyFactory;

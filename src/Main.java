@@ -22,6 +22,8 @@ public class Main {
                     case "4" -> facade.actionRegisterClaim(scanner);
                     case "5" -> facade.actionProcessClaim(scanner);
                     case "6" -> facade.actionGenerateReport();
+                    case "7" -> facade.actionSpecialPayment(scanner);
+                    case "8" -> facade.actionJson();
                     case "0" -> {
                         running = false;
                         System.out.println("Выход...");

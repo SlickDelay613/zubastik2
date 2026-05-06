@@ -5,11 +5,6 @@ import dao.PolicyDao;
 import helper.PolicyDecipher;
 import dao.impl.ClaimDaoImpl;
 import dao.impl.PolicyDaoImpl;
-import factory.*;
-import factory.impl.CarPolicyFactory;
-import factory.impl.HealthPolicyFactory;
-import factory.impl.PolicyFactoryRegistry;
-import factory.impl.PropertyPolicyFactory;
 import helper.PolicyType;
 import model.ClaimDto;
 import model.CustomerDto;
@@ -88,9 +83,7 @@ public class UserController {
 
     public ClaimDto registerClaim(String policyNumber, double damageAmount) {
         PolicyDto policy = policyDao.findByNumber(policyNumber);
-        ClaimDto claim = claimService.createClaim(policy, damageAmount);
-        claimDao.save(claim);
-        return claim;
+        return claimService.createClaim(policy, damageAmount);
     }
 
     public void processClaim(String claimId, boolean approve) {

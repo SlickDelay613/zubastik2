@@ -30,7 +30,9 @@ public class ClaimServiceImpl implements ClaimService {
             throw new ValidationException("Сумма ущерба должна быть положительной!");
         }
         String claimId = String.valueOf(Numerator.makeNewNumberForType(ClaimDto.class));
-        return new ClaimDto(claimId, policy, damageAmount);
+        ClaimDto claim = new ClaimDto(claimId, policy, damageAmount);
+        claimDao.save(claim);
+        return claim;
     }
 
     @Override
