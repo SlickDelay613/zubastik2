@@ -1,17 +1,20 @@
 package service.impl;
 
-import helper.Numerator;
+import app_grpc.client.ReferenceGrpcClient;
 import model.CustomerDto;
-import exception.ValidationException;
 import service.CustomerService;
 
 public class CustomerServiceImpl implements CustomerService {
+    private final ReferenceGrpcClient grpcClient;
+
+    public CustomerServiceImpl(ReferenceGrpcClient grpcClient) {
+        this.grpcClient = grpcClient;
+    }
+
     @Override
     public CustomerDto createCustomer(String name) {
-        if (name == null || name.isEmpty()) {
-            throw new ValidationException("Имя клиента не может быть пустым!");
-        }
-        String customerId = String.valueOf(Numerator.makeNewNumberForType(CustomerDto.class));
+        grpcClient.validateCustomer(name);
+        String customerId = grpcClient.getNewNumberForType(CustomerDto.class);
         return new CustomerDto(customerId, name);
     }
 }

@@ -1,17 +1,23 @@
 package factory.impl;
 
+import app_grpc.client.ReferenceGrpcClient;
 import factory.PolicyFactory;
 import helper.PolicyType;
 import model.CustomerDto;
 import model.PolicyDto;
-import helper.Numerator;
 
 import static helper.PolicyType.HEALTH;
 
 public class HealthPolicyFactory implements PolicyFactory {
+    private final ReferenceGrpcClient grpcClient;
+
+    public HealthPolicyFactory(ReferenceGrpcClient grpcClient){
+        this.grpcClient = grpcClient;
+    }
+
     @Override
     public PolicyDto createPolicy(CustomerDto customer, double coverageAmount, double premium) {
-        String policyNumber = String.valueOf(Numerator.makeNewNumberForType(PolicyDto.class));
+        String policyNumber = grpcClient.getNewNumberForType(PolicyDto.class);
         return new PolicyDto(policyNumber, customer, coverageAmount, premium, HEALTH);
     }
 

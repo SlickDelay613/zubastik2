@@ -1,5 +1,6 @@
 package service.impl;
 
+import app_grpc.client.ReferenceGrpcClient;
 import dao.PolicyDao;
 import factory.PolicyFactory;
 import factory.impl.CarPolicyFactory;
@@ -12,14 +13,16 @@ import model.PolicyDto;
 import service.PolicyService;
 
 public class PolicyServiceImpl implements PolicyService {
-    private PolicyFactoryRegistry registry = new PolicyFactoryRegistry();
+    private final PolicyFactoryRegistry registry = new PolicyFactoryRegistry();
     private final PolicyDao policyDao;
+    private final ReferenceGrpcClient grpcClient;
 
-    public PolicyServiceImpl(PolicyDao policyDao) {
+    public PolicyServiceImpl(PolicyDao policyDao, ReferenceGrpcClient grpcClient) {
         this.policyDao = policyDao;
-        registry.register(new CarPolicyFactory());
-        registry.register(new HealthPolicyFactory());
-        registry.register(new PropertyPolicyFactory());
+        this.grpcClient = grpcClient;
+        registry.register(new CarPolicyFactory(grpcClient));
+        registry.register(new HealthPolicyFactory(grpcClient));
+        registry.register(new PropertyPolicyFactory(grpcClient));
     }
 
     @Override
