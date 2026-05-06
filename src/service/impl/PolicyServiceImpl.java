@@ -32,9 +32,4 @@ public class PolicyServiceImpl implements PolicyService {
         policyDao.save(policy);
         return policy;
     }
-
-    @Override
-    public void cancel(PolicyDto policy) {
-
-    }
 }
