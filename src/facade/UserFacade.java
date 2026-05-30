@@ -99,20 +99,14 @@ public class UserFacade {
         System.out.println("5 - Обработать существующий страховой случай");
         System.out.println("6 - Сформировать отчёт по страховым выплатам");
         System.out.println("7 - Специальная выплата");
-        System.out.println("8 - JSON-отчёт по страховым выплатам");
         System.out.println("0 - Выход");
         System.out.println("Введите номер функции для выполнения (приведены выше)");
     }
 
-    //bad code part
     public void actionSpecialPayment(Scanner scanner) {
         System.out.println("Специальная выплата. Введите номер страхового случая:");
         String claimId = scanner.nextLine().trim();
-        antipattern.SpecialClaimProcessor.forcePayBypass(clientInstance.getAllClaims(), claimId);
-    }
-    public void actionJson() {
-        System.out.println("Создание JSON-отчёта по страховым выплатам...");
-        antipattern.SpecialClaimProcessor.json(clientInstance.getAllClaims());
+        clientInstance.processSpecialClaim(claimId);
     }
 
     public void actionGenerateReport() {

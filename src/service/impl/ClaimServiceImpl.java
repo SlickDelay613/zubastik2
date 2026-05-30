@@ -67,4 +67,18 @@ public class ClaimServiceImpl implements ClaimService {
         }
         claimDao.save(claim);
     }
+
+    @Override
+    public void processSpecialClaimBypass(String claimId) {
+        ClaimDto claim = claimDao.findById(claimId);
+        if (claim == null) {
+            throw new IllegalArgumentException("Клейм с ID " + claimId + " не найден.");
+        }
+        double payment = claim.getDamageAmount() * 3 + claim.getPayoutAmount();
+        approve(claim, payment);
+        markAsPaid(claim);
+        claimDao.save(claim);
+
+        System.out.println("Специальная выплата в объёме " + payment + " произведена успешно!");
+    }
 }

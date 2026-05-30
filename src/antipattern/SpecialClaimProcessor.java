@@ -5,6 +5,7 @@ import java.util.Collection;
 
 //god class
 public class SpecialClaimProcessor {
+    /*
     //spaghetti code, hardcoded dependencies, swallowing exceptions
     public static void forcePayBypass(Collection<ClaimDto> allClaims, String claimId) {
         try {
@@ -75,4 +76,5 @@ public class SpecialClaimProcessor {
         System.out.println(json);
         System.out.println("JSON-файл (конец)");
     }
+     */
 }

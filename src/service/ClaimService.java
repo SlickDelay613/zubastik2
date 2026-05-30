@@ -9,4 +9,5 @@ public interface ClaimService {
     void reject(ClaimDto claim);
     void markAsPaid(ClaimDto claim);
     void processClaim(String claimId, boolean approve);
+    void processSpecialClaimBypass(String claimId);
 }

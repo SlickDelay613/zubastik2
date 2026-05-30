@@ -93,4 +93,8 @@ public class UserController {
     public String generatePayoutReport() {
         return reportService.buildPayoutReport(claimDao.findAll());
     }
+
+    public void processSpecialClaim(String claimId) {
+        claimService.processSpecialClaimBypass(claimId);
+    }
 }
