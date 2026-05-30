@@ -35,6 +35,22 @@ public class ReferenceServiceImpl extends ReferenceServiceGrpc.ReferenceServiceI
         responseObserver.onCompleted();
     }
 
+    /* как можно было написать, используя коды ошибок GRPC
+    @Override
+    public void validateCustomer(CustomerValidationRequest request, StreamObserver<ValidationResponse> responseObserver) {
+        String traceId = request.getTraceId();
+        System.out.println("[Сервер обслуживания] ID: " + traceId + " | Проверка имени: " + request.getName());
+        if (request.getName() == null || request.getName().trim().isEmpty()) {
+            responseObserver.onError(Status.INVALID_ARGUMENT
+                    .withDescription("Имя клиента не может быть пустым!")
+                    .asRuntimeException());
+            return; //обязательная строчка, так как onError не останавливает выполнение метода
+        }
+        responseObserver.onNext(ValidationResponse.newBuilder().setIsValid(true).build());
+        responseObserver.onCompleted();
+    }
+     */
+
     @Override
     public void validateDamage(DamageValidationRequest request, StreamObserver<ValidationResponse> responseObserver) {
         String traceId = request.getTraceId();
